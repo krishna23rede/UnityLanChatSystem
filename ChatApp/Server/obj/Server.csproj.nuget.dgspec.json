@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Tests\\ChatApp\\Server\\Server.csproj": {}
+    "D:\\Tests\\UnityLanChatSystem\\ChatApp\\Server\\Server.csproj": {}
   },
   "projects": {
-    "D:\\Tests\\ChatApp\\Server\\Server.csproj": {
+    "D:\\Tests\\UnityLanChatSystem\\ChatApp\\Server\\Server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Tests\\ChatApp\\Server\\Server.csproj",
+        "projectUniqueName": "D:\\Tests\\UnityLanChatSystem\\ChatApp\\Server\\Server.csproj",
         "projectName": "Server",
-        "projectPath": "D:\\Tests\\ChatApp\\Server\\Server.csproj",
+        "projectPath": "D:\\Tests\\UnityLanChatSystem\\ChatApp\\Server\\Server.csproj",
         "packagesPath": "C:\\Users\\krish\\.nuget\\packages\\",
-        "outputPath": "D:\\Tests\\ChatApp\\Server\\obj\\",
+        "outputPath": "D:\\Tests\\UnityLanChatSystem\\ChatApp\\Server\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

@@ -4,68 +4,60 @@ using System.Text;
 
 List<TcpClient> clients = new();
 
-TcpListener listener =
-    new TcpListener(IPAddress.Any, 5000);
-
+TcpListener listener = new TcpListener(IPAddress.Any, 5000);
 listener.Start();
 
 Console.WriteLine("Server Started");
 
 while (true)
 {
-    TcpClient client =
-        await listener.AcceptTcpClientAsync();
-
+    TcpClient client = await listener.AcceptTcpClientAsync();
     clients.Add(client);
 
-    Console.WriteLine("Client Connected");
+    // Get the IP address when they first connect
+    IPEndPoint? remoteIpEndPoint = client.Client.RemoteEndPoint as IPEndPoint;
+    string clientIP = remoteIpEndPoint?.Address.ToString() ?? "Unknown IP";
 
-    _ = HandleClient(client);
+    Console.WriteLine($"Client Connected from: {clientIP}");
+
+    // Pass the IP address into the handler so we can use it later
+    _ = HandleClient(client, clientIP);
 }
 
-async Task HandleClient(TcpClient client)
+async Task HandleClient(TcpClient client, string clientIP)
 {
-    NetworkStream stream =
-        client.GetStream();
-
+    NetworkStream stream = client.GetStream();
     byte[] buffer = new byte[1024];
 
     try
     {
         while (true)
         {
-            int bytesRead =
-                await stream.ReadAsync(buffer);
+            int bytesRead = await stream.ReadAsync(buffer);
 
             if (bytesRead == 0)
                 break;
 
-            string message =
-                Encoding.UTF8.GetString(
-                    buffer,
-                    0,
-                    bytesRead
-                );
+            string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
 
-            Console.WriteLine(message);
+            // You can now log the message alongside who sent it on the server console
+            Console.WriteLine($"[{clientIP}]: {message}");
 
             foreach (TcpClient c in clients)
             {
-                byte[] data =
-                    Encoding.UTF8.GetBytes(message);
-
-                await c.GetStream()
-                    .WriteAsync(data);
+                byte[] data = Encoding.UTF8.GetBytes(message);
+                await c.GetStream().WriteAsync(data);
             }
         }
     }
     catch
     {
+        // Handle unexpected disconnects cleanly
     }
 
     clients.Remove(client);
-
     client.Close();
 
-    Console.WriteLine("Client Disconnected");
+    // Log which specific IP disconnected
+    Console.WriteLine($"Client Disconnected: {clientIP}");
 }
